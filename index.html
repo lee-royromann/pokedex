@@ -63,7 +63,7 @@
     <!-- Main -->
     <main>
         <div id="main__container">
-            <div class="card">
+            <div class="card" onclick="showModal()">
                 <span class="card__title">#6 Charizard</span>
                 <img class="card__image bg-fire" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/6.svg" alt="charizard">
                 <div class="card__types">
@@ -92,11 +92,11 @@
     </div>
 
     <!-- Modal-Overlay Pokemon -->
-    <div class="modal__overlay d_none">
-        <div class="modal">
+    <div class="modal__overlay d_none" onclick="closeModal()">
+        <div class="modal" onclick="event.stopPropagation()">
             <div class="modal__header">
                 <span class="modal__id">#6 - Glurak</span>
-                <i class="bi bi-x modal__close"></i>
+                <i class="bi bi-x modal__close" onclick="closeModal()"></i>
             </div>
             <div class="modal__image">
                 <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/6.svg" alt="">

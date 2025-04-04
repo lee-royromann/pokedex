@@ -30,3 +30,17 @@ function hideLoadingOverlay() {
     document.getElementById("overlay__spinner").classList.add("d_none");
     document.body.classList.remove("overflow-hidden");
 }
+
+function showModal() {
+    document.querySelector(".modal__overlay").classList.remove("d_none");
+    document.body.classList.add("overflow-hidden");
+}
+
+function closeModal() {
+    document.querySelector(".modal__overlay").classList.add("d_none");
+    document.body.classList.remove("overflow-hidden");
+}
+
+function skipToNextPokemon(direction) {
+    console.log(direction);
+}

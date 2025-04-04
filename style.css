@@ -42,6 +42,10 @@ main {
     padding: 30px;
 }
 
+.overflow-hidden {
+    overflow: hidden;
+}
+
 .d_none {
     display: none !important;
 }
