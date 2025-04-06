@@ -62,20 +62,8 @@
 
     <!-- Main -->
     <main>
-        <div id="main__container">
-            <div class="card" onclick="showModal()">
-                <span class="card__title">#6 Charizard</span>
-                <img class="card__image bg-fire" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/6.svg" alt="charizard">
-                <div class="card__types">
-                    <div class="card__types--type bg-fire">
-                        <img class="card__types--icon" src="./assets/icons/fire.svg">
-                    </div>
-                    <div class="card__types--type bg-flying">
-                        <img class="card__types--icon" src="./assets/icons/flying.svg">
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div id="main__container"></div>
+        <button id="main__load-button" onclick="fetchPokemonList()">Load more</button>
     </main>
 
     <!-- Footer -->
