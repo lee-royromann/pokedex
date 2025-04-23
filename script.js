@@ -1,5 +1,5 @@
 let offset = 0;
-let limit = 12;
+let limit = 24;
 let totalPokemonCount = 0;
 let currentPokemonCount = 0;
 let pokemonData = []; // url + name
@@ -15,22 +15,32 @@ async function fetchPokemonList() {
         let response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);        
         pokemonData = await response.json();        
         updatePokemonCounterTotal(pokemonData.count);
-        await loadPokemonDetails();       
+        await loadPokemonInformations();       
     } catch (error) {
         console.error(error);
     }
 }
 
-async function loadPokemonDetails() {
-    const urls = [];
+async function loadPokemonInformations() {
+    let urls = [];
+    let newLoadedPokemons = [];
     for (let i = 0; i < pokemonData.results.length; i++) {
         urls.push(pokemonData.results[i].url);
     }
-    const newLoadedPokemons = await fetchPokemonDetails(urls);
+    newLoadedPokemons = await fetchPokemonDetails(urls);
     pokemonInfos.push(...newLoadedPokemons);
-    offset += limit;
+    updateOffset();
     updatePokemonCounterCurrent();
     renderPokemons(newLoadedPokemons);
+}
+
+function updateOffset() {
+    if (offset < pokemonData.count) {
+        if ((pokemonData.count - offset) < limit) {
+            limit = pokemonData.count - offset;
+        }
+        offset += limit;
+    }
 }
 
 async function fetchPokemonDetails(urls) {
@@ -63,18 +73,6 @@ function renderPokemons(newLoadedPokemons) {
     let pokemonCards = newLoadedPokemons.map(getCardTemplate).join('');
     containerRef.innerHTML += pokemonCards;
     hideLoadingOverlay();
-}
-
-function getCardTemplate(pokemon) {
-    return `
-        <div class="card" onclick="showPokemonDetails(${pokemon.id})">
-            <span class="card__title">#${pokemon.id} ${capitalizeName(pokemon.name)}</span>
-            ${getPokemonImage(pokemon)}
-            <div class="card__types">
-                ${getPokemonTypes(pokemon.types)}
-            </div>
-        </div>
-    `;
 }
 
 function capitalizeName(name) {
@@ -113,7 +111,6 @@ function getWeightInKg(weight) {
 }
 
 function showPokemonDetails(id) {
-    console.log(pokemonInfos[id-1]);
     let modalTemplate = getModalTemplate(pokemonInfos[id-1]);
     document.querySelector(".modal__overlay").innerHTML = modalTemplate;
     document.querySelector(".modal__overlay").classList.remove("d_none");
@@ -121,27 +118,41 @@ function showPokemonDetails(id) {
     showModal();
 }
 
-function getPokemonInfos(id, selectedTab) {
+function loadPokemonInfos(id, selectedTab) {
     setActivePokemonTab(selectedTab);
-    console.log(id);    
+    let container = document.getElementById('modal__data-container');
+    container.innerHTML = "";
+    container.innerHTML = getPokemonInfoTemplate(pokemonInfos[id-1]);
 }
 
-function getPokemonStats(id, selectedTab) {
+function loadPokemonStats(id, selectedTab) {
     setActivePokemonTab(selectedTab);
-    console.log(id);
+    let container = document.getElementById('modal__data-container');
+    container.innerHTML = "";
+    container.innerHTML = getPokemonStatsTemplate(pokemonInfos[id-1]);
+    for (let i = 0; i < pokemonInfos[id-1].stats.length; i++) {
+        const stat = pokemonInfos[id-1].stats[i];
+    }
 };
 
-async function getPokemonEvoChain(pokemonId, activeTabName) {
+async function loadPokemonEvoChain(pokemonId, activeTabName) {
     setActivePokemonTab(activeTabName);
+    let container = document.getElementById('modal__data-container');
+    container.innerHTML = "";
+    let evolutionChainNames = await fetchEvolutionChain(pokemonId)
+    console.log(evolutionChainNames);
+}
+
+async function fetchEvolutionChain(pokemonId) {
     try {
-        const speciesRes = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}/`);
-        const speciesData = await speciesRes.json();
-        const evoRes = await fetch(speciesData.evolution_chain.url);
-        const evolutionData = await evoRes.json();
+        const speciesResponse = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}/`);
+        const speciesData = await speciesResponse.json();
+        const evoResponse = await fetch(speciesData.evolution_chain.url);
+        const evolutionData = await evoResponse.json();
         const evolutionNames = extractEvolutionNames(evolutionData.chain);
         return evolutionNames;
     } catch (error) {
-        console.log("Fehler beim Laden der Entwicklungskette:", error);
+        console.log("Failed to load the evolution chain names!", error);
         return [];
     }
 }
@@ -158,7 +169,6 @@ function extractEvolutionNames(chain) {
             currentStage = null;
         }
     }
-    console.log("Evolution Names:", evolutionNames);
     return evolutionNames;
 }
 
@@ -176,51 +186,6 @@ function setActivePokemonTab(selectedTab) {
             }
         }
     }
-}
-
-function getModalTemplate(pokemon) {
-    return `
-            <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal__header">
-                <span class="modal__id">#${pokemon.id} - ${capitalizeName(pokemon.name)}</span>
-                <i class="bi bi-x modal__close" onclick="closeModal()"></i>
-            </div>
-            <div class="modal__image bg-${pokemon.types[0]}">
-                <img src="${pokemon.sprites.other.dream_world.front_default}" alt="${name}">
-            </div>
-            <div class="modal__types">
-                ${getPokemonTypes(pokemon.types)}
-            </div>
-            <div>
-                <div class="modal__selectors">
-                    <div class="modal__selector active" id="modal__selector-infos" onclick="getPokemonInfos(${pokemon.id}, 'infos')">Infos</div>
-                    <div class="modal__selector" id="modal__selector-stats" onclick="getPokemonStats(${pokemon.id}, 'stats')">Stats</div>
-                    <div class="modal__selector" id="modal__selector-evo" onclick="getPokemonEvoChain(${pokemon.id}, 'evo')">Evo chain</div>
-                </div>
-                <div id="modal__data-container">
-                    <div class="modal__infos" id="modal__infos">
-                        <div class="modal__info-spec">
-                            <p>Height:</p>
-                            <p>Weight:</p>
-                            <p>Base Exp.:</p>
-                            <p>Abilities:</p>
-                        </div>
-                        <div class="modal__info-value">
-                            <p>${getHeighInMeters(pokemon.height)} m</p>
-                            <p>${getWeightInKg(pokemon.weight)} kg</p>
-                            <p>${pokemon.base_experience}</p>
-                            <p>${getPokemonAbilities(pokemon)}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal__footer">
-                <img onclick="skipToNextPokemon('left')" src="./assets/img/arrow_left.png" alt="Nach links" title="Skip-Button Links">
-                <p>${pokemon.id} / ${currentPokemonCount}</p>
-                <img onclick="skipToNextPokemon('right')" src="./assets/img/arrow_right.png" alt="Nach rechts" title="Skip-Button Rechts">
-            </div>
-        </div>
-`
 }
 
 function updatePokemonCounterTotal(total) {
