@@ -113,6 +113,7 @@ function getWeightInKg(weight) {
 function showPokemonDetails(id) {
     let modalTemplate = getModalTemplate(pokemonInfos[id-1]);
     document.querySelector(".modal__overlay").innerHTML = modalTemplate;
+    loadPokemonStats(id, "stats");
     document.querySelector(".modal__overlay").classList.remove("d_none");
     document.body.classList.add("overflow-hidden");
     showModal();
@@ -140,7 +141,8 @@ async function loadPokemonEvoChain(pokemonId, activeTabName) {
     let container = document.getElementById('modal__data-container');
     container.innerHTML = "";
     let evolutionChainNames = await fetchEvolutionChain(pokemonId)
-    console.log(evolutionChainNames);
+    let pokeData = await fetchEvolutionChainImages(evolutionChainNames);
+    renderEvoChainImages(pokeData);
 }
 
 async function fetchEvolutionChain(pokemonId) {
@@ -170,6 +172,32 @@ function extractEvolutionNames(chain) {
         }
     }
     return evolutionNames;
+}
+
+async function fetchEvolutionChainImages(evolutionNames) {
+    let pokemons = [];
+    for (let i = 0; i < evolutionNames.length; i++) {
+        const name = evolutionNames[i];
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}/`);
+        const pokemonData = await response.json();
+        pokemons.push(pokemonData);
+    }
+    return pokemons;
+}
+
+function renderEvoChainImages(pokeData) {
+    let container = document.getElementById('modal__data-container');
+    container.innerHTML = "";
+    let imageContainer = document.createElement('div');
+    imageContainer.classList.add('modal__evolution');
+    for (let i = 0; i < pokeData.length; i++) {
+        const pokemon = pokeData[i];
+        const img = document.createElement('img');
+        img.src = pokemon.sprites.other.dream_world.front_default;
+        img.alt = pokemon.name;
+        imageContainer.appendChild(img);
+    }
+    container.appendChild(imageContainer);
 }
 
 function setActivePokemonTab(selectedTab) {

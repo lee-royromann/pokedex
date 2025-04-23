@@ -25,25 +25,11 @@ function getModalTemplate(pokemon) {
             </div>
             <div>
                 <div class="modal__selectors">
-                    <div class="modal__selector active" id="modal__selector-infos" onclick="loadPokemonInfos(${pokemon.id}, 'infos')">Infos</div>
-                    <div class="modal__selector" id="modal__selector-stats" onclick="loadPokemonStats(${pokemon.id}, 'stats')">Stats</div>
+                    <div class="modal__selector active" id="modal__selector-stats" onclick="loadPokemonStats(${pokemon.id}, 'stats')">Stats</div>
                     <div class="modal__selector" id="modal__selector-evo" onclick="loadPokemonEvoChain(${pokemon.id}, 'evo')">Evo chain</div>
+                    <div class="modal__selector" id="modal__selector-infos" onclick="loadPokemonInfos(${pokemon.id}, 'infos')">Infos</div>
                 </div>
                 <div class="modal__data-container" id="modal__data-container">
-                    <div class="modal__infos" id="modal__infos">
-                        <div class="modal__info-spec">
-                            <p>Height:</p>
-                            <p>Weight:</p>
-                            <p>Base Exp.:</p>
-                            <p>Abilities:</p>
-                        </div>
-                        <div class="modal__info-value">
-                            <p>${getHeighInMeters(pokemon.height)} m</p>
-                            <p>${getWeightInKg(pokemon.weight)} kg</p>
-                            <p>${pokemon.base_experience}</p>
-                            <p>${getPokemonAbilities(pokemon)}</p>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="modal__footer">
