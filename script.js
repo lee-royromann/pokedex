@@ -1,5 +1,5 @@
 let offset = 0;
-let limit = 24;
+let limit = 100;
 let totalPokemonCount = 0;
 let currentPokemonCount = 0;
 let pokemonData = []; // url + name
@@ -79,21 +79,11 @@ function capitalizeName(name) {
     return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
-function getPokemonTypes(types) {
-    return types.map(type => `
-        <div class="card__types--type bg-${type}">
-            <img class="card__types--icon" src="./assets/icons/${type}.svg">
-        </div>
-    `).join('');
-}
-
-function getPokemonImage(pokemon) {
-    return `
-        <img class="card__image bg-${pokemon.types[0]}" 
-            src="${pokemon.sprites.other.dream_world.front_default}" 
-            alt="${pokemon.name}"
-        >
-    `;
+function togglePokemonTypeAppearance(type, id, selection) {
+    let icon = document.getElementById(`card__type-${id}-${type}`);
+    let name = document.getElementById(`card__name-${id}-${type}`);
+    name.classList.toggle("d_none");
+    icon.classList.toggle("d_none");
 }
 
 function getPokemonAbilities(pokemon) {
@@ -139,7 +129,7 @@ function loadPokemonStats(id, selectedTab) {
 async function loadPokemonEvoChain(pokemonId, activeTabName) {
     setActivePokemonTab(activeTabName);
     let container = document.getElementById('modal__data-container');
-    container.innerHTML = "";
+    container.innerHTML = getLoadingSpinnerTemplate();
     let evolutionChainNames = await fetchEvolutionChain(pokemonId)
     let pokeData = await fetchEvolutionChainImages(evolutionChainNames);
     renderEvoChainImages(pokeData);
@@ -245,6 +235,8 @@ function closeModal() {
     document.body.classList.remove("overflow-hidden");
 }
 
-function skipToNextPokemon(direction) {
+function skipToNextPokemon(direction, pokemonId) {
     console.log(direction);
+    console.log(pokemonId);
+    updateModalContent(pokemonId);
 }

@@ -2,26 +2,44 @@ function getCardTemplate(pokemon) {
     return `
         <div class="card" onclick="showPokemonDetails(${pokemon.id})">
             <span class="card__title">#${pokemon.id} ${capitalizeName(pokemon.name)}</span>
-            ${getPokemonImage(pokemon)}
+            ${getPokemonImageTemplate(pokemon)}
             <div class="card__types">
-                ${getPokemonTypes(pokemon.types)}
+                ${getPokemonTypesCardTemplate(pokemon.types, pokemon.id)}
             </div>
         </div>
     `;
+}
+
+function getPokemonImageTemplate(pokemon) {
+    return `
+        <img class="card__image bg-${pokemon.types[0]}" 
+            src="${pokemon.sprites.other.dream_world.front_default}" 
+            alt="${pokemon.name}"
+        >
+    `;
+}
+
+function getPokemonTypesCardTemplate(types, id) {
+    return types.map(type => `
+     <div class="card__types--type bg-${type}">
+         <img class="card__types--icon" src="./assets/icons/${type}.svg" alt="${type}">
+     </div>
+     <span class="card__types--name d_none">${capitalizeName(type)}</span>
+ `).join('');
 }
 
 function getModalTemplate(pokemon) {
     return `
             <div class="modal" onclick="event.stopPropagation()">
             <div class="modal__header">
-                <span class="modal__id">#${pokemon.id} - ${capitalizeName(pokemon.name)}</span>
+                <span class="modal__id" id="modal__id-${pokemon.id}">#${pokemon.id} - ${capitalizeName(pokemon.name)}</span>
                 <i class="bi bi-x modal__close" onclick="closeModal()"></i>
             </div>
             <div class="modal__image bg-${pokemon.types[0]}">
                 <img src="${pokemon.sprites.other.dream_world.front_default}" alt="${name}">
             </div>
             <div class="modal__types">
-                ${getPokemonTypes(pokemon.types)}
+                ${getPokemonTypesModalTemplate(pokemon.types, pokemon.id)}
             </div>
             <div>
                 <div class="modal__selectors">
@@ -33,12 +51,21 @@ function getModalTemplate(pokemon) {
                 </div>
             </div>
             <div class="modal__footer">
-                <img onclick="skipToNextPokemon('left')" src="./assets/img/arrow_left.png" alt="Nach links" title="Skip-Button Links">
+                <img onclick="skipToNextPokemon('left', ${pokemon.id})" src="./assets/img/arrow_left.png" alt="Nach links" title="Skip-Button Links">
                 <p>${pokemon.id} / ${currentPokemonCount}</p>
-                <img onclick="skipToNextPokemon('right')" src="./assets/img/arrow_right.png" alt="Nach rechts" title="Skip-Button Rechts">
+                <img onclick="skipToNextPokemon('right', ${pokemon.id})" src="./assets/img/arrow_right.png" alt="Nach rechts" title="Skip-Button Rechts">
             </div>
         </div>
     `
+}
+
+function getPokemonTypesModalTemplate(types, id) {
+    return types.map(type => `
+     <div class="card__types--type bg-${type}" id="card__type-${id}-${type}" onclick="togglePokemonTypeAppearance('${type}', ${id}, 'icon')">
+         <img class="card__types--icon" src="./assets/icons/${type}.svg" alt="${type}">
+     </div>
+     <span class="card__types--name txt-color-${type} d_none" id="card__name-${id}-${type}" onclick="togglePokemonTypeAppearance('${type}', ${id}, 'name')">${capitalizeName(type)}</span>
+ `).join('');
 }
 
 function getPokemonInfoTemplate(pokemon) {
@@ -127,10 +154,13 @@ function getPokemonStatsTemplate(pokemon) {
     `;
 }
 
-function getPokemonTypes(types) {
-    return types.map(type => `
-        <div class="modal__type ${type.type.name}">
-            ${capitalizeName(type.type.name)}
-        </div>
-    `).join('');
+function getLoadingSpinnerTemplate() {
+    return `
+    <div class="modal__loading-spinner">
+        <p>Loading</p>
+        <svg class="svg-spinner" viewBox="0 0 50 50">
+            <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+        </svg>
+    </div>
+    `;
 }

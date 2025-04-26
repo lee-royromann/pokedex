@@ -90,3 +90,75 @@
 .bg-water {
     background-color: var(--water);
 }
+
+.txt-color-bug {
+    color: var(--bug);
+}
+
+.txt-color-dark {
+    color: var(--dark);
+}
+
+.txt-color-dragon {
+    color: var(--dragon);
+}
+
+.txt-color-electric {
+    color: var(--electric);
+}
+
+.txt-color-fairy {
+    color: var(--fairy);
+}
+
+.txt-color-fighting {
+    color: var(--fighting);
+}
+
+.txt-color-fire {
+    color: var(--fire);
+}
+
+.txt-color-flying {
+    color: var(--flying);
+}
+
+.txt-color-ghost {
+    color: var(--ghost);
+}
+
+.txt-color-grass {
+    color: var(--grass);
+}
+
+.txt-color-ground {
+    color: var(--ground);
+}
+
+.txt-color-ice {
+    color: var(--ice);
+}
+
+.txt-color-normal {
+    color: var(--normal);
+}
+
+.txt-color-poison {
+    color: var(--poison);
+}
+
+.txt-color-psychic {
+    color: var(--psychic);
+}
+
+.txt-color-rock {
+    color: var(--rock);
+}
+
+.txt-color-steel {
+    color: var(--steel);
+}
+
+.txt-color-water {
+    color: var(--water);
+}
