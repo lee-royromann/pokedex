@@ -94,3 +94,36 @@ header input:hover {
     border: 1px solid rgba(114, 215, 243, 0.6);
     cursor: pointer;
 }
+
+@media screen and (max-width: 670px) {
+    header {
+        height: 80px;
+    }
+
+    .header__container {
+        padding: 20px, 20px;
+    }
+
+    .header__logo span {
+        font-size: 24px;
+    }
+
+    .header__logo p {
+        font-size: 16px;
+    }
+
+    .header__logo img {
+        width: 25px;
+        height: 25px;
+    }
+
+    .header__counter p {
+        font-size: 16px;
+    }
+
+    header input {
+        max-width: 150px;
+        height: 35px;
+        font-size: 14px;
+    }
+}

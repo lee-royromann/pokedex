@@ -31,32 +31,45 @@ function getPokemonTypesCardTemplate(types, id) {
 function getModalTemplate(pokemon) {
     return `
             <div class="modal" onclick="event.stopPropagation()">
-            <div class="modal__header">
-                <span class="modal__id" id="modal__id-${pokemon.id}">#${pokemon.id} - ${capitalizeName(pokemon.name)}</span>
-                <i class="bi bi-x modal__close" onclick="closeModal()"></i>
-            </div>
-            <div class="modal__image bg-${pokemon.types[0]}">
-                <img src="${pokemon.sprites.other.dream_world.front_default}" alt="${name}">
-            </div>
-            <div class="modal__types">
-                ${getPokemonTypesModalTemplate(pokemon.types, pokemon.id)}
-            </div>
+            <div class="modal__header">${getModalTemplateHeaderContent(pokemon)}</div>
+            <div class="modal__image">${getModalTemplatePokemonImage(pokemon)}</div>
+            <div class="modal__types">${getPokemonTypesModalTemplate(pokemon.types, pokemon.id)}</div>
             <div>
-                <div class="modal__selectors">
-                    <div class="modal__selector active" id="modal__selector-stats" onclick="loadPokemonStats(${pokemon.id}, 'stats')">Stats</div>
-                    <div class="modal__selector" id="modal__selector-evo" onclick="loadPokemonEvoChain(${pokemon.id}, 'evo')">Evo chain</div>
-                    <div class="modal__selector" id="modal__selector-infos" onclick="loadPokemonInfos(${pokemon.id}, 'infos')">Infos</div>
-                </div>
-                <div class="modal__data-container" id="modal__data-container">
-                </div>
+                <div class="modal__selectors">${getModalTemplateTabSelectors(pokemon)}</div>
+                <div class="modal__data-container" id="modal__data-container"></div>
             </div>
-            <div class="modal__footer">
-                <img onclick="skipToNextPokemon('left', ${pokemon.id})" src="./assets/img/arrow_left.png" alt="Nach links" title="Skip-Button Links">
-                <p>${pokemon.id} / ${currentPokemonCount}</p>
-                <img onclick="skipToNextPokemon('right', ${pokemon.id})" src="./assets/img/arrow_right.png" alt="Nach rechts" title="Skip-Button Rechts">
-            </div>
+            <div class="modal__footer">${getModalTemplateFooterContent(pokemon)}</div>
         </div>
     `
+}
+
+function getModalTemplateHeaderContent(pokemon) {
+    return `
+        <span class="modal__id" id="modal__id-${pokemon.id}">#${pokemon.id} - ${capitalizeName(pokemon.name)}</span>
+        <i class="bi bi-x modal__close" onclick="closeModal()"></i>
+    `;
+}
+
+function getModalTemplatePokemonImage(pokemon) {
+    return `
+        <img class="card__image bg-${pokemon.types[0]}" src="${pokemon.sprites.other.dream_world.front_default}" alt="${pokemon.name}" onclick="playPokemonCry('${pokemon.cries.latest}')" title="Click to play cry">
+    `;
+}
+
+function getModalTemplateTabSelectors(pokemon) {
+    return `
+        <div class="modal__selector active" id="modal__selector-stats" onclick="loadPokemonStats(${pokemon.id}, 'stats')">Stats</div>
+        <div class="modal__selector" id="modal__selector-evo" onclick="loadPokemonEvoChain(${pokemon.id}, 'evo')">Evo chain</div>
+        <div class="modal__selector" id="modal__selector-infos" onclick="loadPokemonInfos(${pokemon.id}, 'infos')">Infos</div>
+    `;
+}
+
+function getModalTemplateFooterContent(pokemon) {
+    return `
+        <img onclick="skipToNextPokemon('left', ${pokemon.id})" src="./assets/img/arrow_left.png" alt="Nach links" title="Skip-Button Links">
+        <p>${pokemon.id} / ${currentPokemonCount}</p>
+        <img onclick="skipToNextPokemon('right', ${pokemon.id})" src="./assets/img/arrow_right.png" alt="Nach rechts" title="Skip-Button Rechts">
+    `;
 }
 
 function getPokemonTypesModalTemplate(types, id) {
@@ -90,7 +103,6 @@ function getPokemonInfoTemplate(pokemon) {
 function getPokemonStatsTemplate(pokemon) {
     return `
         <div class="modal__stats" id="modal__stats">
-
             <div class="modal__stats-data-row">
                 <div class="modal__stats-data">
                     <p>${capitalizeName(pokemon.stats[0].stat.name)}:</p>
@@ -100,7 +112,6 @@ function getPokemonStatsTemplate(pokemon) {
                     <div class="modal__stats-value" style="width: ${pokemon.stats[0].base_stat / 2}%;"><p class="modal__stats-value--internal">${pokemon.stats[0].base_stat}</p></div>
                 </div>
             </div>
-
             <div class="modal__stats-data-row">
                 <div class="modal__stats-data">
                     <p>${capitalizeName(pokemon.stats[1].stat.name)}:</p>
@@ -110,7 +121,6 @@ function getPokemonStatsTemplate(pokemon) {
                     <div class="modal__stats-value" style="width: ${pokemon.stats[1].base_stat / 2}%;"><p class="modal__stats-value--internal">${pokemon.stats[1].base_stat}</p></div>
                 </div>
             </div>
-
             <div class="modal__stats-data-row">
                 <div class="modal__stats-data">
                     <p>${capitalizeName(pokemon.stats[2].stat.name)}:</p>
@@ -120,7 +130,6 @@ function getPokemonStatsTemplate(pokemon) {
                     <div class="modal__stats-value" style="width: ${pokemon.stats[2].base_stat / 2}%;"><p class="modal__stats-value--internal">${pokemon.stats[2].base_stat}</p></div>
                 </div>
             </div>
-
             <div class="modal__stats-data-row">
                 <div class="modal__stats-data">
                     <p>${capitalizeName(pokemon.stats[3].stat.name)}:</p>
@@ -130,7 +139,6 @@ function getPokemonStatsTemplate(pokemon) {
                     <div class="modal__stats-value" style="width: ${pokemon.stats[3].base_stat / 2}%;"><p class="modal__stats-value--internal">${pokemon.stats[3].base_stat}</p></div>
                 </div>
             </div>
-
             <div class="modal__stats-data-row">
                 <div class="modal__stats-data">
                     <p>${capitalizeName(pokemon.stats[4].stat.name)}:</p>
@@ -140,7 +148,6 @@ function getPokemonStatsTemplate(pokemon) {
                     <div class="modal__stats-value" style="width: ${pokemon.stats[4].base_stat / 2}%;"><p class="modal__stats-value--internal">${pokemon.stats[4].base_stat}</p></div>
                 </div>
             </div>
-
             <div class="modal__stats-data-row">
                 <div class="modal__stats-data">
                     <p>${capitalizeName(pokemon.stats[5].stat.name)}:</p>
