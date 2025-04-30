@@ -3,11 +3,9 @@ let currentPokemonId = null;
 function skipToNextPokemon(direction, pokemonId) {
     const currentIndex = findCurrentPokemonIndex(pokemonId);
     if (currentIndex === -1) return;
-
     const nextIndex = calculateNextIndex(currentIndex, direction);
     const nextPokemon = getNextPokemon(nextIndex);
     if (!nextPokemon) return;
-
     updateModalContent(nextPokemon);
 }
 

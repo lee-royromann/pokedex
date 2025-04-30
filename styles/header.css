@@ -51,7 +51,6 @@ header {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-right: 20px;
 }
 
 .header__counter p {
@@ -95,7 +94,15 @@ header input:hover {
     cursor: pointer;
 }
 
+.header__delete-search {
+    cursor: pointer;
+}
+
 @media screen and (max-width: 670px) {
+    body {
+        padding-top: 80px;
+    }
+
     header {
         height: 80px;
     }
@@ -125,5 +132,25 @@ header input:hover {
         max-width: 150px;
         height: 35px;
         font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 630px) {
+    .header__counter {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    body {
+        padding-top: 120px;
+    }
+
+    header {
+        height: 120px;
+    }
+    .header__container {
+        flex-direction: column;
+        gap: 20px;
     }
 }

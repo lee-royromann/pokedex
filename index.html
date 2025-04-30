@@ -50,7 +50,7 @@
         <div class="header__container">
             <div class="header__logo">
                 <img src="./assets/img/pokeball.png" alt="Pokéball">
-                <span>Pokédex</span><br>
+                <span>Pokédex</span>
             </div>
             <div class="header__counter">
                 <p id="header__counter--loaded">0</p>
@@ -59,7 +59,8 @@
             </div>
             <div class="header__search">
                 <i class="bi bi-search"></i>
-                <input type="text" placeholder="Search for a Pokémon"> 
+                <input type="text" placeholder="Search for a Pokémon">
+                <i class="bi bi-trash3 header__delete-search" onclick="deleteSearchInput()"></i>
             </div>
         </div>
     </header>
@@ -67,7 +68,7 @@
     <!-- Main -->
     <main>
         <div id="main__container"></div>
-        <button id="main__load-button" onclick="fetchPokemonList()">Load more</button>
+        <button id="main__load-button" onclick="fetchPokemonList(), deleteSearchInput()">Load more</button>
     </main>
 
     <!-- Footer -->

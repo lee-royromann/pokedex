@@ -1,8 +1,8 @@
 let offset = 0;
 let limit = 30;
 let currentPokemonCount = 0;
-let pokemonData = []; // url + name
-let pokemonInfos = []; // abilities etc.
+let pokemonData = [];
+let pokemonInfos = [];
 
 function init() {
     fetchPokemonList();
@@ -106,4 +106,10 @@ function showModal() {
 function closeModal() {
     document.querySelector(".modal__overlay").classList.add("d_none");
     document.body.classList.remove("overflow-hidden");
+}
+
+function deleteSearchInput() {
+    const searchInput = document.querySelector('.header__search input');
+    searchInput.value = '';
+    showAllCards();
 }

@@ -1,38 +1,35 @@
 function setupSearch() {
-    const searchInput = document.querySelector('.header__search input');
-    searchInput.addEventListener('input', function() {
-        const query = this.value.trim().toLowerCase();
-
-        if (query.length < 3) {
+    const searchField = document.querySelector('.header__search input');
+    searchField.addEventListener('input', function() {
+        const text = searchField.value.trim().toLowerCase();
+        if (text.length < 3) {
             showAllCards();
             return;
         }
-
-        filterCardsByName(query);
+        filterCardsByName(text);
     });
 }
 
 function showAllCards() {
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(card => {
+    const allCards = document.querySelectorAll('.card');
+    allCards.forEach(function(card) {
         card.classList.remove('d_none');
     });
 }
 
 function filterCardsByName(query) {
-    const cards = document.querySelectorAll('.card');
-
-    cards.forEach(card => {
-        const title = card.querySelector('.card__title');
-        if (!title) return;
-
-        const name = title.textContent.trim().toLowerCase();
+    const allCards = document.querySelectorAll('.card');
+    allCards.forEach(function(card) {
+        const titleElement = card.querySelector('.card__title');
+        if (!titleElement) {
+            return;
+        }
+        const name = titleElement.textContent.trim().toLowerCase();
         if (name.includes(query)) {
-            card.classList.remove('d_none'); {
-            };
-        } else {
-            card.classList.add('d_none'); {
-            };
+            card.classList.remove('d_none');
+        } 
+        else {
+            card.classList.add('d_none');
         }
     });
 }
