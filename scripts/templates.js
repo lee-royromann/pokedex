@@ -46,7 +46,7 @@ function getModalTemplate(pokemon) {
 function getModalTemplateHeaderContent(pokemon) {
     return `
         <span class="modal__id" id="modal__id-${pokemon.id}">#${pokemon.id} - ${capitalizeName(pokemon.name)}</span>
-        <i class="bi bi-x modal__close" onclick="closeModal()"></i>
+        <i class="bi bi-x modal__close" onclick="toggleOverlay('.modal__overlay', false)"></i>
     `;
 }
 

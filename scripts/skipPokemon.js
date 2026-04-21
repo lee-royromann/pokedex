@@ -52,31 +52,25 @@ function updateCurrentPokemon(pokemon) {
     currentPokemonId = pokemon.id;
 }
 
-function updateModalHeader(pokemon) {
-    const header = document.querySelector('.modal__header');
-    if (header) {
-        header.innerHTML = getModalTemplateHeaderContent(pokemon);
+function updateModalSection(selector, contentFunction, ...args) {
+    const container = document.querySelector(selector);
+    if (container) {
+        container.innerHTML = contentFunction(...args);
     } else {
-        console.warn('Modal header-container not found.');
+        console.warn(`Modal container '${selector}' not found.`);
     }
+}
+
+function updateModalHeader(pokemon) {
+    updateModalSection('.modal__header', getModalTemplateHeaderContent, pokemon);
 }
 
 function updateModalImage(pokemon) {
-    const imageContainer = document.querySelector('.modal__image');
-    if (imageContainer) {
-        imageContainer.innerHTML = getModalTemplatePokemonImage(pokemon);
-    } else {
-        console.warn('Modal image-container not found.');
-    }
+    updateModalSection('.modal__image', getModalTemplatePokemonImage, pokemon);
 }
 
 function updateModalTypes(pokemon) {
-    const typesContainer = document.querySelector('.modal__types');
-    if (typesContainer) {
-        typesContainer.innerHTML = getPokemonTypesModalTemplate(pokemon.types, pokemon.id);
-    } else {
-        console.warn('Modal types-container not found.');
-    }
+    updateModalSection('.modal__types', getPokemonTypesModalTemplate, pokemon.types, pokemon.id);
 }
 
 function getActiveTab() {

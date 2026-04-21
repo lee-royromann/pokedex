@@ -4,7 +4,7 @@ function showPokemonDetails(id) {
     loadPokemonStats(id, "stats");
     document.querySelector(".modal__overlay").classList.remove("d_none");
     document.body.classList.add("overflow-hidden");
-    showModal();
+    toggleOverlay('.modal__overlay', true);
 }
 
 function togglePokemonTypeAppearance(type, id, selection) {

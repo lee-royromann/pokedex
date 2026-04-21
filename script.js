@@ -10,7 +10,7 @@ function init() {
 }
 
 async function fetchPokemonList() {
-    showLoadingOverlay();
+    toggleOverlay('#overlay__spinner', true);
     try {
         let response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);        
         pokemonData = await response.json();        
@@ -41,7 +41,7 @@ async function fetchPokemonDetails(urls) {
 }
 
 function fetchPromises(urls) {
-    const fetchedPromises = [];
+    const fetchedPromises = [];    
     for (let i = 0; i < urls.length; i++) {
         fetchedPromises.push(fetch(urls[i]));
     }
@@ -72,40 +72,41 @@ function renderPokemons(newLoadedPokemons) {
     let containerRef = document.getElementById('main__container');
     let pokemonCards = newLoadedPokemons.map(getCardTemplate).join('');
     containerRef.innerHTML += pokemonCards;
-    hideLoadingOverlay();
+    toggleOverlay('#overlay__spinner', false);
 }
 
 function capitalizeName(name) {
     return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
+function updateCounter(selector, value) {
+    const element = document.querySelector(selector);
+    if (element) {
+        element.innerHTML = value;
+    } else {
+        console.warn(`Counter element '${selector}' not found.`);
+    }
+}
+
 function updatePokemonCounterTotal(total) {
-    document.getElementById('header__counter--total').innerHTML = total;
+    updateCounter('#header__counter--total', total);
 }
 
 function updatePokemonCounterCurrent() {
     currentPokemonCount = offset;
-    document.getElementById('header__counter--loaded').innerHTML = offset;
+    updateCounter('#header__counter--loaded', offset);
 }
 
-function showLoadingOverlay() {
-    document.getElementById("overlay__spinner").classList.remove("d_none");
-    document.body.classList.add("overflow-hidden");
+function toggleOverlay(selector, show) {
+    const overlay = document.querySelector(selector);
+    if (!overlay) return;
+
+    overlay.classList.toggle('d_none', !show);
+    document.body.classList.toggle('overflow-hidden', show);
 }
 
 function hideLoadingOverlay() {
-    document.getElementById("overlay__spinner").classList.add("d_none");
-    document.body.classList.remove("overflow-hidden");
-}
-
-function showModal() {
-    document.querySelector(".modal__overlay").classList.remove("d_none");
-    document.body.classList.add("overflow-hidden");
-}
-
-function closeModal() {
-    document.querySelector(".modal__overlay").classList.add("d_none");
-    document.body.classList.remove("overflow-hidden");
+    toggleOverlay('#overlay__spinner', false);
 }
 
 function deleteSearchInput() {
